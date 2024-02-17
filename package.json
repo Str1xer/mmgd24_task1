@@ -1,0 +1,31 @@
+{
+  "name": "ping-pong-test",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "coverage": "jest --coverage",
+    "start": "parcel index.html",
+    "test": "jest --verbose",
+    "watch": "jest --watch"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Wolwer1nE/ping-pong-test.git"
+  },
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Wolwer1nE/ping-pong-test/issues"
+  },
+  "homepage": "https://github.com/Wolwer1nE/ping-pong-test#readme",
+  "devDependencies": {
+    "@babel/core": "^7.19.1",
+    "@parcel/babel-preset-env": "^2.7.0",
+    "jest": "^29.0.3",
+    "parcel": "^2.7.0",
+    "core-js": "^3.35.1"
+  },
+  "dependencies": {
+
+  }
+}
