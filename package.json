@@ -2,12 +2,13 @@
   "name": "ping-pong-test",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "source": "index.html",
   "scripts": {
     "coverage": "jest --coverage",
     "start": "parcel index.html",
     "test": "jest --verbose",
-    "watch": "jest --watch"
+    "watch": "jest --watch",
+    "build": "parcel build"
   },
   "repository": {
     "type": "git",
