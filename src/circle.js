@@ -5,6 +5,9 @@ export default class Circle extends Rectangle {
     constructor(x, y, r, vx, vy) {
         super(x, y, r, r, vx, vy)
         this.r = r
+        this.type = "Circle"
+        this.hits = 0
+        this.color = `rgb(${Math.floor(Math.random() * 255)},${Math.floor(Math.random() * 255)},${Math.floor(Math.random() * 255)})`
     }
 
     get left() {
@@ -31,11 +34,15 @@ export default class Circle extends Rectangle {
         context.fill()
     }
 
+    changeColor() {
+        this.color = `rgb(${Math.floor(Math.random() * 255)},${Math.floor(Math.random() * 255)},${Math.floor(Math.random() * 255)})`
+    }
+
     contains(point) {
         return Math.sqrt(Math.pow(point.x - this.x, 2) + Math.pow(point.y - this.y, 2)) < this.r
     }
 
     intersects(rect) {
-        return rect.constructor.name === "Circle" ? CircleVsCircle(this, rect) : PolygonVsCircle(rect, this)
+        return rect.type === "Circle" ? CircleVsCircle(this, rect) : PolygonVsCircle(rect, this)
     }
 }

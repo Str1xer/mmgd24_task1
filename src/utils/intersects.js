@@ -36,20 +36,29 @@ const PolygonVsPolygon = (a, b) => {
 const PolygonVsCircle = (polygon, circle) => {
     const temp = [...polygon.verticles, polygon.verticles[0]]
 
+    let separation = Number.NEGATIVE_INFINITY
+
     for (let i = 0; i < temp.length - 1; i++) {
         const normal = { x: (temp[i].y - temp[i + 1].y), y: -(temp[i].x - temp[i + 1].x) }
+
+        let minSep = Number.MAX_VALUE
+
         const cosA = DotProduct({ x: 1, y: 0 }, normal) / Math.sqrt(Math.pow(normal.x, 2) + Math.pow(normal.y, 2))
         const sinA = Math.sqrt(1 - cosA * cosA)
 
-        const tempY = -(temp[i].x - circle.x) * sinA + (temp[i].y - circle.y) * cosA
-        const tempX = (temp[i].x - circle.x) * cosA + (temp[i].y - circle.y) * sinA
+        for (let j = 0; j < temp.length - 1; j++) {
+            const tempY = -(temp[j].x - circle.x) * sinA + (temp[j].y - circle.y) * cosA
+            const tempX = (temp[j].x - circle.x) * cosA + (temp[j].y - circle.y) * sinA
 
-        const dist = Math.pow(tempX, 2) + Math.pow(tempY, 2) - circle.r * circle.r
+            const dist = Math.pow(tempX, 2) - circle.r * circle.r
 
-        if (dist < 0) return true;
+            minSep = Math.min(minSep, dist)
+        }
+
+        separation = Math.max(separation, minSep)
     }
 
-    return false
+    return separation < 0
 }
 
 

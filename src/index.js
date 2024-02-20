@@ -1,7 +1,10 @@
 import Circle from "./circle";
 import Hexagon from "./hexagon";
+import QuadTree from "./quad-tree";
 import Rectangle from "./rectangle";
 import Triangle from "./triangle";
+
+const counter = document.getElementById("counter")
 
 function getRandomInt(min, max) {
     min = Math.ceil(min);
@@ -11,51 +14,27 @@ function getRandomInt(min, max) {
 
 const canvas = document.getElementById("cnvs");
 
+const quad = new QuadTree(new Rectangle(0, 0, document.body.clientWidth, document.body.clientHeight))
+
 const gameState = {
-    rects:
-        [
-            // new Triangle(50, 100, 100, 0, 1),
-            // new Triangle(50, 140, 600, 0, -1)
-            new Triangle(50, getRandomInt(100, document.body.clientWidth - 100), getRandomInt(100, document.body.clientHeight - 100), (Math.random() - 0.5) * 2, (Math.random() - 0.5) * 2),
-            new Triangle(50, getRandomInt(100, document.body.clientWidth - 100), getRandomInt(100, document.body.clientHeight - 100), (Math.random() - 0.5) * 2, (Math.random() - 0.5) * 2),
-            new Triangle(50, getRandomInt(100, document.body.clientWidth - 100), getRandomInt(100, document.body.clientHeight - 100), (Math.random() - 0.5) * 2, (Math.random() - 0.5) * 2),
-            new Triangle(50, getRandomInt(100, document.body.clientWidth - 100), getRandomInt(100, document.body.clientHeight - 100), (Math.random() - 0.5) * 2, (Math.random() - 0.5) * 2),
-            new Triangle(50, getRandomInt(100, document.body.clientWidth - 100), getRandomInt(100, document.body.clientHeight - 100), (Math.random() - 0.5) * 2, (Math.random() - 0.5) * 2),
-            new Triangle(50, getRandomInt(100, document.body.clientWidth - 100), getRandomInt(100, document.body.clientHeight - 100), (Math.random() - 0.5) * 2, (Math.random() - 0.5) * 2),
-            new Triangle(50, getRandomInt(100, document.body.clientWidth - 100), getRandomInt(100, document.body.clientHeight - 100), (Math.random() - 0.5) * 2, (Math.random() - 0.5) * 2),
-            new Triangle(50, getRandomInt(100, document.body.clientWidth - 100), getRandomInt(100, document.body.clientHeight - 100), (Math.random() - 0.5) * 2, (Math.random() - 0.5) * 2),
-            new Triangle(50, getRandomInt(100, document.body.clientWidth - 100), getRandomInt(100, document.body.clientHeight - 100), (Math.random() - 0.5) * 2, (Math.random() - 0.5) * 2),
-            new Triangle(50, getRandomInt(100, document.body.clientWidth - 100), getRandomInt(100, document.body.clientHeight - 100), (Math.random() - 0.5) * 2, (Math.random() - 0.5) * 2),
+    rects: []
+}
 
-            new Hexagon(25, getRandomInt(100, document.body.clientWidth - 100), getRandomInt(100, document.body.clientHeight - 100), (Math.random() - 0.5) * 2, (Math.random() - 0.5) * 2),
-            new Hexagon(25, getRandomInt(100, document.body.clientWidth - 100), getRandomInt(100, document.body.clientHeight - 100), (Math.random() - 0.5) * 2, (Math.random() - 0.5) * 2),
-            new Hexagon(25, getRandomInt(100, document.body.clientWidth - 100), getRandomInt(100, document.body.clientHeight - 100), (Math.random() - 0.5) * 2, (Math.random() - 0.5) * 2),
-            new Hexagon(25, getRandomInt(100, document.body.clientWidth - 100), getRandomInt(100, document.body.clientHeight - 100), (Math.random() - 0.5) * 2, (Math.random() - 0.5) * 2),
-            new Hexagon(25, getRandomInt(100, document.body.clientWidth - 100), getRandomInt(100, document.body.clientHeight - 100), (Math.random() - 0.5) * 2, (Math.random() - 0.5) * 2),
-            new Hexagon(25, getRandomInt(100, document.body.clientWidth - 100), getRandomInt(100, document.body.clientHeight - 100), (Math.random() - 0.5) * 2, (Math.random() - 0.5) * 2),
-            new Hexagon(25, getRandomInt(100, document.body.clientWidth - 100), getRandomInt(100, document.body.clientHeight - 100), (Math.random() - 0.5) * 2, (Math.random() - 0.5) * 2),
-            new Hexagon(25, getRandomInt(100, document.body.clientWidth - 100), getRandomInt(100, document.body.clientHeight - 100), (Math.random() - 0.5) * 2, (Math.random() - 0.5) * 2),
-            new Hexagon(25, getRandomInt(100, document.body.clientWidth - 100), getRandomInt(100, document.body.clientHeight - 100), (Math.random() - 0.5) * 2, (Math.random() - 0.5) * 2),
-            new Hexagon(25, getRandomInt(100, document.body.clientWidth - 100), getRandomInt(100, document.body.clientHeight - 100), (Math.random() - 0.5) * 2, (Math.random() - 0.5) * 2),
+const size = 16
+const circleSize = size * 4 // size + gap  
+const cols = Math.floor((window.document.body.clientWidth) / circleSize) - 1
+const rows = Math.floor((window.document.body.clientHeight) / circleSize) - 1
 
-            // new Circle(100, 300, 25, 0, 1),
-            // new Circle(100, 600, 25, 0, -1),
-            // new Triangle(50, 140, 600, 0, -1),
-            // new Hexagon(25, 120, 100, 0, -1)
-
-            // new Rectangle(700, 10, 20, 20, -1, 0),
-            new Circle(getRandomInt(100, document.body.clientWidth - 100), getRandomInt(100, document.body.clientHeight - 100), getRandomInt(20, 40), (Math.random() - 0.5) * 2, (Math.random() - 0.5) * 2),
-            new Circle(getRandomInt(100, document.body.clientWidth - 100), getRandomInt(100, document.body.clientHeight - 100), getRandomInt(20, 40), (Math.random() - 0.5) * 2, (Math.random() - 0.5) * 2),
-            new Circle(getRandomInt(100, document.body.clientWidth - 100), getRandomInt(100, document.body.clientHeight - 100), getRandomInt(20, 40), (Math.random() - 0.5) * 2, (Math.random() - 0.5) * 2),
-            new Circle(getRandomInt(100, document.body.clientWidth - 100), getRandomInt(100, document.body.clientHeight - 100), getRandomInt(20, 40), (Math.random() - 0.5) * 2, (Math.random() - 0.5) * 2),
-            new Circle(getRandomInt(100, document.body.clientWidth - 100), getRandomInt(100, document.body.clientHeight - 100), getRandomInt(20, 40), (Math.random() - 0.5) * 2, (Math.random() - 0.5) * 2),
-            new Circle(getRandomInt(100, document.body.clientWidth - 100), getRandomInt(100, document.body.clientHeight - 100), getRandomInt(20, 40), (Math.random() - 0.5) * 2, (Math.random() - 0.5) * 2),
-            new Circle(getRandomInt(100, document.body.clientWidth - 100), getRandomInt(100, document.body.clientHeight - 100), getRandomInt(20, 40), (Math.random() - 0.5) * 2, (Math.random() - 0.5) * 2),
-            new Circle(getRandomInt(100, document.body.clientWidth - 100), getRandomInt(100, document.body.clientHeight - 100), getRandomInt(20, 40), (Math.random() - 0.5) * 2, (Math.random() - 0.5) * 2),
-            new Circle(getRandomInt(100, document.body.clientWidth - 100), getRandomInt(100, document.body.clientHeight - 100), getRandomInt(20, 40), (Math.random() - 0.5) * 2, (Math.random() - 0.5) * 2),
-            new Circle(getRandomInt(100, document.body.clientWidth - 100), getRandomInt(100, document.body.clientHeight - 100), getRandomInt(20, 40), (Math.random() - 0.5) * 2, (Math.random() - 0.5) * 2)
-        ],
-};
+for (let i = 0; i < rows * cols; i++) {
+    let rand = getRandomInt(0, 2)
+    if (rand == 0) {
+        gameState.rects.push(new Hexagon(size, circleSize + (i % cols) * circleSize, circleSize + Math.floor(i / cols) * circleSize, (Math.random() - 0.5) * 2, (Math.random() - 0.5) * 2))
+    } else if (rand == 1) {
+        gameState.rects.push(new Circle(circleSize + (i % cols) * circleSize, circleSize + Math.floor(i / cols) * circleSize, size, (Math.random() - 0.5) * 2, (Math.random() - 0.5) * 2))
+    } else {
+        gameState.rects.push(new Triangle(size * (1 + Math.cos(Math.PI / 6)), circleSize + (i % cols) * circleSize, circleSize + Math.floor(i / cols) * circleSize, (Math.random() - 0.5) * 2, (Math.random() - 0.5) * 2))
+    }
+}
 
 function queueUpdates(numTicks) {
     for (let i = 0; i < numTicks; i++) {
@@ -65,6 +44,7 @@ function queueUpdates(numTicks) {
 }
 
 function draw(tFrame) {
+    counter.innerHTML = `Object Count: ${gameState.rects.length}`
     const context = canvas.getContext('2d');
 
     // clear canvas
@@ -74,30 +54,31 @@ function draw(tFrame) {
     gameState.rects.forEach(r => {
         r.draw(context)
     })
-
-    // gameState.circles.forEach(c => {
-    //     c.draw(context)
-    // })
 }
 
 function update(tick) {
+    quad.clear()
+
+    for (let i = 0; i < gameState.rects.length; i++) {
+        quad.insert(gameState.rects[i])
+    }
 
     const actualsRects = []
 
     for (let i = 0; i < gameState.rects.length; i++) {
         const currentRect = gameState.rects[i]
 
-        let isOverlap = false;
-        const overlapRects = []
-        
+        const possibleOverlap = quad.queryRange(currentRect)
+
+        let isOverlap = false
+
         if (currentRect.hits < 3) {
             actualsRects.push(currentRect)
-            for (let j = i + 1; j < gameState.rects.length; j++) {
-                const otherRect = gameState.rects[j]
+            for (let j = 0; j < possibleOverlap.length; j++) {
+                const otherRect = possibleOverlap[j]
 
-                if (otherRect.hits < 3 && currentRect.intersects(otherRect)) {
-                    overlapRects.push(otherRect)
-                    isOverlap = isOverlap || true
+                if (otherRect != currentRect && otherRect.hits < 3 && currentRect.intersects(otherRect)) {
+                    isOverlap = true
                 }
             }
         }
@@ -107,13 +88,6 @@ function update(tick) {
             currentRect.vy = -currentRect.vy
             currentRect.changeColor()
             currentRect.hits += 1
-
-            overlapRects.forEach(otherRect => {
-                otherRect.vx = -otherRect.vx
-                otherRect.vy = -otherRect.vy
-                otherRect.changeColor()
-                otherRect.hits += 1
-            })
         } else if (currentRect.left < 0 || currentRect.top < 0 || currentRect.right > document.body.clientWidth || currentRect.bottom > document.body.clientHeight) {
             currentRect.vx = -currentRect.vx
             currentRect.vy = -currentRect.vy

@@ -4,11 +4,15 @@ import { PolygonVsCircle, PolygonVsPolygon } from "./utils/intersects";
 export default class Hexagon extends Rectangle {
     constructor(r, x, y, vx, vy) {
         super()
+        this.type = "Hexagon"
         this.x = x
         this.y = y
         this.r = r
+        this.h = r
+        this.w = r
         this.vx = vx
         this.vy = vy
+        this.hits = 0
         this.color = `rgb(${Math.floor(Math.random() * 255)},${Math.floor(Math.random() * 255)},${Math.floor(Math.random() * 255)})`
         this.verticles = []
     }
@@ -33,19 +37,19 @@ export default class Hexagon extends Rectangle {
     }
 
     get left() {
-        return this.x - this.r
+        return this.x - this.w
     }
 
     get right() {
-        return this.x + this.r
+        return this.x + this.w
     }
 
     get top() {
-        return this.y - this.r
+        return this.y - this.h
     }
 
     get bottom() {
-        return this.y + this.r
+        return this.y + this.h
     }
 
     changeColor() {
@@ -53,6 +57,6 @@ export default class Hexagon extends Rectangle {
     }
 
     intersects(rect) {
-        return rect.constructor.name === "Circle" ? PolygonVsCircle(this, rect) : PolygonVsPolygon(this, rect)
+        return rect.type === "Circle" ? PolygonVsCircle(this, rect) : PolygonVsPolygon(this, rect)
     }
 }

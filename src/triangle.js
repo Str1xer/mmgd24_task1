@@ -4,12 +4,14 @@ import { PolygonVsCircle, PolygonVsPolygon } from "./utils/intersects";
 export default class Triangle extends Rectangle {
     constructor(a, x, y, vx, vy) {
         super()
+        this.type = "Triangle"
         this.x = x
         this.y = y
         this.a = a
         this.vx = vx
         this.vy = vy
         this.color = `rgb(${Math.floor(Math.random() * 255)},${Math.floor(Math.random() * 255)},${Math.floor(Math.random() * 255)})`
+        this.hits = 0
         this.verticles = [
             { x: this.left, y: this.bottom },
             { x: this.right, y: this.bottom },
@@ -55,6 +57,6 @@ export default class Triangle extends Rectangle {
     }
 
     intersects(rect) {
-        return rect.constructor.name === "Circle" ? PolygonVsCircle(this, rect) : PolygonVsPolygon(this, rect)
+        return rect.type === "Circle" ? PolygonVsCircle(this, rect) : PolygonVsPolygon(this, rect)
     }
 }
