@@ -30,7 +30,7 @@ const PolygonVsPolygon = (a, b) => {
         separation = Math.max(separation, minSep)
     }
 
-    return separation < 0
+    return separation <= 0
 }
 
 const PolygonVsCircle = (polygon, circle) => {
@@ -58,14 +58,14 @@ const PolygonVsCircle = (polygon, circle) => {
         separation = Math.max(separation, minSep)
     }
 
-    return separation < 0
+    return separation <= 0
 }
 
 
 const CircleVsCircle = (circleA, circleB) => {
     const dist = Math.sqrt(Math.pow(circleB.x - circleA.x, 2) + Math.pow(circleB.y - circleA.y, 2))
 
-    if (dist < circleA.r + circleB.r) return true
+    if (dist <= circleA.r + circleB.r) return true
     return false
 }
 

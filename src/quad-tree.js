@@ -11,6 +11,7 @@ export default class QuadTree {
         }
 
         this._points = []
+        this._count = 0
         this._boundary = boundary
         this._capacity = capacity
         this._hasChildren = false
@@ -21,8 +22,9 @@ export default class QuadTree {
     insert(point) {
 
         this._points.push(point)
+        this._count += 1
 
-        if (this._points.length > this._capacity) {
+        if (this._count > this._capacity) {
 
             if (!this._hasChildren)
                 this._subdivide()
@@ -51,13 +53,14 @@ export default class QuadTree {
     }
 
     get length() {
-        let count = this._points.length
-        if (this._hasChildren) {
-            count += this._children[0].length()
-            count += this._children[1].length()
-            count += this._children[2].length()
-            count += this._children[3].length()
-        }
+        // console.log(this)
+        let count = this._count
+        // if (this._hasChildren) {
+        //     count += this._children[0].length
+        //     count += this._children[1].length
+        //     count += this._children[2].length
+        //     count += this._children[3].length
+        // }
         return count
     }
 
@@ -95,6 +98,7 @@ export default class QuadTree {
         this._points = []
         this._children = []
         this._hasChildren = false
+        this._count = 0
     }
 
     printTree() {

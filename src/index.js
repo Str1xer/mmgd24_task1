@@ -3,6 +3,8 @@ import Hexagon from "./hexagon";
 import QuadTree from "./quad-tree";
 import Rectangle from "./rectangle";
 import Triangle from "./triangle";
+import CollisionComponent from "./utils/collision";
+import RenderComponent from "./utils/render";
 
 const counter = document.getElementById("counter")
 
@@ -15,6 +17,15 @@ function getRandomInt(min, max) {
 const canvas = document.getElementById("cnvs");
 
 const quad = new QuadTree(new Rectangle(0, 0, document.body.clientWidth, document.body.clientHeight))
+const renderComponent = new RenderComponent()
+const collisionComponent = new CollisionComponent()
+// const gameState = {
+//     rects:
+//         [
+//             new Triangle(20, 40, 40, 0, 0),
+//             new Hexagon(10, 40, 40, 0, 0)
+//         ],
+// };
 
 const gameState = {
     rects: []
@@ -52,7 +63,7 @@ function draw(tFrame) {
 
     // draw
     gameState.rects.forEach(r => {
-        r.draw(context)
+        renderComponent.drawRect(context, r)
     })
 }
 
@@ -77,7 +88,7 @@ function update(tick) {
             for (let j = 0; j < possibleOverlap.length; j++) {
                 const otherRect = possibleOverlap[j]
 
-                if (otherRect != currentRect && otherRect.hits < 3 && currentRect.intersects(otherRect)) {
+                if (otherRect != currentRect && otherRect.hits < 3 && collisionComponent.intersects(currentRect, otherRect)) {
                     isOverlap = true
                 }
             }
@@ -86,7 +97,7 @@ function update(tick) {
         if (isOverlap) {
             currentRect.vx = -currentRect.vx
             currentRect.vy = -currentRect.vy
-            currentRect.changeColor()
+            renderComponent.changeColor(currentRect)
             currentRect.hits += 1
         } else if (currentRect.left < 0 || currentRect.top < 0 || currentRect.right > document.body.clientWidth || currentRect.bottom > document.body.clientHeight) {
             currentRect.vx = -currentRect.vx
